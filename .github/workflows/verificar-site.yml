@@ -1,0 +1,16 @@
+name: Verificar site no ar
+on:
+  push:
+    branches: [verificar-site]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Espera o deploy de produção terminar
+        run: sleep 100
+      - name: Testa cadastro, gols simultâneos e limpeza
+        run: node .github/verificar-site.mjs https://patota-six.vercel.app
