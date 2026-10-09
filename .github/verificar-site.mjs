@@ -6,7 +6,7 @@ const get = async (p) => { const r = await fetch(base + p); return { status: r.s
 const post = async (p, body) => {
   const r = await fetch(base + p, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(`${p} ${body.op} -> ${r.status} ${j.error ?? ''}`);
+  if (!r.ok) throw new Error(`${p} ${body.op} -> ${r.status} ${j.error ?? ''} ${j.detail ?? ''}`);
   return j;
 };
 
