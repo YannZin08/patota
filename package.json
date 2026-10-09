@@ -7,9 +7,6 @@
   "scripts": {
     "dev": "node dev-server.mjs"
   },
-  "engines": {
-    "node": "22.x"
-  },
   "dependencies": {
     "@vercel/blob": "2.8.0"
   }
