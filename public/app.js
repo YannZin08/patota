@@ -197,7 +197,10 @@ async function loadAll() {
 
 // Alterações num dia de jogo. A tela muda na hora (otimista) e, quando todas as
 // requisições em andamento terminam, fica com a versão mais nova do servidor.
+// As alterações de um mesmo celular vão uma de cada vez, na ordem dos toques,
+// para não disputarem o mesmo arquivo no servidor.
 const inflight = { count: 0, latest: new Map(), stale: new Set() };
+let queue = Promise.resolve();
 
 async function changeDay(dayId, payload, optimistic) {
   const day = findDay(dayId);
@@ -207,7 +210,9 @@ async function changeDay(dayId, payload, optimistic) {
   }
   inflight.count++;
   try {
-    const res = await api('/api/day', { id: dayId, ...payload });
+    const request = queue.then(() => api('/api/day', { id: dayId, ...payload }));
+    queue = request.catch(() => {});
+    const res = await request;
     if (res.day) {
       const prev = inflight.latest.get(dayId);
       if (!prev || res.day.updatedAt >= prev.updatedAt) inflight.latest.set(dayId, res.day);
