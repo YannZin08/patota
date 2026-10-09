@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Patota</title>
+  <meta name="description" content="Presença, placar ao vivo e artilharia da patota.">
+  <meta name="theme-color" content="#16784a">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Patota">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand-ball" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7.2l3.6 2.6-1.4 4.2H9.8L8.4 9.8z"/><path d="M12 2v5.2M15.6 9.8l5.6-1.6M14.2 14l3.4 5M9.8 14l-3.4 5M8.4 9.8L2.8 8.2"/></svg>
+      </span>
+      <span id="patota-name" class="brand-name">Patota</span>
+      <span id="sync" class="sync" hidden>Sem conexão</span>
+    </div>
+  </header>
+
+  <main id="view" class="view" aria-live="polite">
+    <p class="loading">Carregando…</p>
+  </main>
+
+  <nav class="tabbar" aria-label="Menu">
+    <a href="#/" data-tab="jogos">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 5v14M3 10h3v4H3M21 10h-3v4h3"/><circle cx="12" cy="12" r="2"/></svg>
+      <span>Jogos</span>
+    </a>
+    <a href="#/jogadores" data-tab="jogadores">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3.4 3-5.2 6-5.2s5.4 1.8 6 5.2"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 13.9c2.4.2 4 1.7 4.5 4.6"/></svg>
+      <span>Jogadores</span>
+    </a>
+    <a href="#/estatisticas" data-tab="estatisticas">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>
+      <span>Estatísticas</span>
+    </a>
+  </nav>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

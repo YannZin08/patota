@@ -1,0 +1,16 @@
+{
+  "name": "patota",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Controle de jogos da patota: jogadores, presença, placar ao vivo e artilharia.",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@vercel/blob": "2.8.0"
+  }
+}
