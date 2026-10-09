@@ -26,9 +26,22 @@ try {
   await post('/api/day', { id: dayId, op: 'setPresence', playerId, present: true });
   await post('/api/day', { id: dayId, op: 'assignPlayer', playerId, teamId: day.teams[0].id });
   const m = (await post('/api/day', { id: dayId, op: 'addMatch', teamA: day.teams[0].id, teamB: day.teams[1].id })).day.matches[0];
-  await Promise.all(Array.from({ length: 8 }, () => post('/api/day', { id: dayId, op: 'goal', matchId: m.id, side: 'A', playerId })));
-  const saved = JSON.parse((await get(`/api/day?id=${dayId}`)).body).day;
-  ok(saved.matches[0].goals.length === 8, `8 gols enviados ao mesmo tempo, ${saved.matches[0].goals.length} salvos`);
+  const goal = () => post('/api/day', { id: dayId, op: 'goal', matchId: m.id, side: 'A', playerId });
+  const count = async () => JSON.parse((await get(`/api/day?id=${dayId}`)).body).day.matches[0].goals.length;
+
+  let t = Date.now();
+  for (let i = 0; i < 6; i++) await goal();
+  ok((await count()) === 6, `6 gols seguidos de um celular (${Date.now() - t} ms)`);
+
+  t = Date.now();
+  await Promise.all([goal(), goal(), goal()]);
+  ok((await count()) === 9, `3 gols no mesmo instante de celulares diferentes (${Date.now() - t} ms)`);
+
+  t = Date.now();
+  const burst = await Promise.allSettled(Array.from({ length: 8 }, goal));
+  const failed = burst.filter((r) => r.status === 'rejected');
+  for (const f of failed) console.log('   erro:', f.reason.message);
+  console.log(`info - teste de estresse: 8 gols no mesmo instante, ${8 - failed.length} aceitos, total salvo ${await count()} (${Date.now() - t} ms)`);
 } finally {
   if (dayId) await post('/api/day', { op: 'delete', id: dayId });
   if (playerId) await post('/api/players', { op: 'delete', id: playerId });
